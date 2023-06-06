@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from foodgram import const
 from recipes.models import (
-    AmountOfIngredient, Cart, Ingredient, Favourite, Recipe, Tag
+    AmountOfIngredient, Cart, Favourite, Ingredient, Recipe, Tag
 )
 
 
