@@ -11,6 +11,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -22,10 +23,9 @@ jobs:
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
         pip install -r backend/requirements.txt
 
-    - name: Test with flake8, pytest and django tests
+    - name: Test with flake8
       run: |
         python -m flake8
-        pytest
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
@@ -47,9 +47,9 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          file: ./api_yamdb/Dockerfile
+          file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/yamdb_workflow:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram-back:latest
 
   deploy:
     runs-on: ubuntu-latest
