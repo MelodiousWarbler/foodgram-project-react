@@ -14,20 +14,22 @@ from rest_framework import generics, status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import action, api_view
-from rest_framework.permissions import (SAFE_METHODS, AllowAny,
-                                        IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly)
+from rest_framework.permissions import (
+    AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly, SAFE_METHODS
+)
 from rest_framework.response import Response
+
 
 # from .filters import IngredientFilter, RecipeFilter
 from .permissions import IsAdminOrReadOnly
-from recipes.models import (Favourite, Ingredient, Recipe, Cart, Tag)
-from users.models import Subscription
 from .serializers import (IngredientSerializer, RecipeReadSerializer,
                           RecipeWriteSerializer, SubscribeRecipeSerializer,
                           SubscribeSerializer, TagSerializer, TokenSerializer,
                           UserCreateSerializer, UserListSerializer,
                           UserPasswordSerializer)
+from recipes.models import (Cart, Ingredient, Favourite, Recipe, Tag)
+from users.models import Subscription
+
 
 User = get_user_model()
 FILENAME = 'shoppingcart.pdf'
