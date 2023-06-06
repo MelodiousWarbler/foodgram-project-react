@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 def validate_username(value):
     if re.search(r'^[\w.@+-]+\z', value) is None:
         raise ValidationError(
-            ('Допустимы значения по маске "^[\w.@+-]+\z"'),
+            ('Допустимы буквы латинского алфавита, цифры и символы .@+-'),
             params={'value': value},
         )
 
