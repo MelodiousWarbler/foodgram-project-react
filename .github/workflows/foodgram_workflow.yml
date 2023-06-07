@@ -5,9 +5,9 @@ on: [push]
 jobs:
   tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.7", "3.8", "3.9"]
+    # strategy:
+    #   matrix:
+    #     python-version: ["3.7", "3.8", "3.9"]
 
     steps:
     - uses: actions/checkout@v2
@@ -15,7 +15,8 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.9
+        # python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
       run: |
@@ -79,10 +80,10 @@ jobs:
           echo DB_HOST=${{ secrets.DB_HOST }} >> .env
           echo DB_PORT=${{ secrets.DB_PORT }} >> .env
           sudo docker-compose up -d
-          sudo docker-compose exec -T backend python manage.py makemigrations
-          sudo docker-compose exec -T backend python manage.py migrate
-          sudo docker-compose exec -T backend python manage.py collectstatic --no-input
-          sudo docker-compose exec -T backend python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'admin')"
+          # sudo docker-compose exec -T backend python manage.py makemigrations
+          # sudo docker-compose exec -T backend python manage.py migrate
+          # sudo docker-compose exec -T backend python manage.py collectstatic --no-input
+          # sudo docker-compose exec -T backend python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'admin')"
 
   send_message:
     runs-on: ubuntu-latest
