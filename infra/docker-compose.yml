@@ -6,10 +6,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env
+      - ../backend/foodgram/.env
 
   backend:
-    container_name: foodgram-app
+    # container_name: foodgram-app
     image: melodiouswarbler/foodgram-back:latest
     restart: always
     volumes:
@@ -18,7 +18,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./.env
+      - ../backend/foodgram/.env
 
   frontend:
     image: melodiouswarbler/foodgram-front:latest
@@ -39,7 +39,7 @@ services:
       - static_value:/var/html/static/
       - media_value:/var/html/media/
     depends_on:
-      - backend
+      - frontend
 
 volumes:
   postgres_data:
