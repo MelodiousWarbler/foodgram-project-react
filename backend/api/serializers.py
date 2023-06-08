@@ -1,7 +1,7 @@
-from djoser.serializers import (# isort:skip
-    UserCreateSerializer as DjoserUserCreateSerializer,# isort:skip
-    UserSerializer as DjoserUserSerializer# isort:skip
-) # isort:skip
+from djoser.serializers import (  # isort:skip
+    UserCreateSerializer as DjoserUserCreateSerializer,  # isort:skip
+    UserSerializer as DjoserUserSerializer  # isort:skip
+)  # isort:skip
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
