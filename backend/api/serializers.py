@@ -1,6 +1,7 @@
-from djoser.serializers import \
+from djoser.serializers import (
+    UserSerializer as DjoserUserSerializer,
     UserCreateSerializer as DjoserUserCreateSerializer
-from djoser.serializers import UserSerializer as DjoserUserSerializer
+)
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
