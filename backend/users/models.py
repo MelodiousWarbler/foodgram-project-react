@@ -29,10 +29,14 @@ class MyUser(AbstractUser):
         'Пароль',
         max_length=const.USER_STANDARD_FIELD_LENGTH,
     )
-    # is_active = models.BooleanField(
-    #     'Активен',
-    #     default=True,
-    # )
+
+    REQUIRED_FIELDS = [
+        'username',
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+    ]
 
     class Meta:
         verbose_name = 'Пользователь'

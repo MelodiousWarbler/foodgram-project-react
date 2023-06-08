@@ -22,7 +22,7 @@ from rest_framework.response import Response
 from recipes.models import Cart, Favourite, Ingredient, Recipe, Tag
 from users.models import Subscription
 
-# from .filters import IngredientFilter, RecipeFilter
+from .filters import IngredientFilter, RecipeFilter
 from .permissions import IsAdminOrReadOnly
 from .serializers import (
     IngredientSerializer, RecipeReadSerializer, RecipeWriteSerializer,
@@ -188,7 +188,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
     """Рецепты."""
 
     queryset = Recipe.objects.all()
-    # filterset_class = RecipeFilter
+    filterset_class = RecipeFilter
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_serializer_class(self):
@@ -279,7 +279,7 @@ class IngredientsViewSet(
 
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    # filterset_class = IngredientFilter
+    filterset_class = IngredientFilter
 
 
 @api_view(['post'])
