@@ -30,7 +30,6 @@ class MyUser(AbstractUser):
         max_length=const.USER_STANDARD_FIELD_LENGTH,
     )
 
-
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
