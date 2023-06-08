@@ -1,8 +1,8 @@
-from djoser.serializers import (
-    UserCreateSerializer as DjoserUserCreateSerializer
-)
-from djoser.serializers import UserSerializer as DjoserUserSerializer
 from drf_extra_fields.fields import Base64ImageField
+from djoser.serializers import (
+    UserCreateSerializer as DjoserUserCreateSerializer,
+    UserSerializer as DjoserUserSerializer
+)
 from rest_framework import serializers
 
 from recipes.models import AmountOfIngredient, Ingredient, Recipe, Tag
