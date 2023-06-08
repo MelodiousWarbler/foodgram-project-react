@@ -1,8 +1,8 @@
 from django.core.exceptions import ValidationError
 from django_filters import rest_framework as filters
 
-from users.models import MyUser
 from recipes.models import Ingredient, Recipe
+from users.models import MyUser
 
 
 class TagsMultipleChoiceField(

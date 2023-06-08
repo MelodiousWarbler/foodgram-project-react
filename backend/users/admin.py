@@ -21,6 +21,7 @@ class MyUserAdmin(UserAdmin):
         'first_name', 'email',
     )
 
+
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = (
