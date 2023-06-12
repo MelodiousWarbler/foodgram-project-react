@@ -5,18 +5,19 @@ from foodgram import const
 from foodgram.validators import validate_username
 
 
-class MyUser(AbstractUser):
+class User(AbstractUser):
     email = models.EmailField(
         'Адрес электронной почты',
         max_length=const.EMAIL_LENGTH,
-        unique=True,
-    )
-    username = models.CharField(
-        'Уникальный юзернейм',
-        max_length=const.USER_STANDARD_FIELD_LENGTH,
         validators=(validate_username,),
         unique=True,
     )
+    # username = models.CharField(
+    #     'Уникальный юзернейм',
+    #     max_length=const.USER_STANDARD_FIELD_LENGTH,
+    #     validators=(validate_username,),
+    #     unique=True,
+    # )
     first_name = models.CharField(
         'Имя',
         max_length=const.USER_STANDARD_FIELD_LENGTH,
@@ -30,6 +31,13 @@ class MyUser(AbstractUser):
         max_length=const.USER_STANDARD_FIELD_LENGTH,
     )
 
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = [
+        'username',
+        'first_name',
+        'last_name',
+    ]
+
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
@@ -41,15 +49,15 @@ class MyUser(AbstractUser):
 
 class Subscription(models.Model):
     author = models.ForeignKey(
-        MyUser,
+        User,
         verbose_name='Автор рецепта',
-        related_name='subscribers',
+        related_name='subscribing',
         on_delete=models.CASCADE,
     )
     user = models.ForeignKey(
-        MyUser,
+        User,
         verbose_name='Подписчики',
-        related_name='subscriptions',
+        related_name='subscriber',
         on_delete=models.CASCADE,
     )
     date_added = models.DateTimeField(

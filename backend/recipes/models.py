@@ -60,6 +60,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='recipes',
         verbose_name='автор'
     )
     name = models.CharField('Название', max_length=const.STANDARD_LENGTH)
@@ -95,6 +96,7 @@ class AmountOfIngredient(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
+        related_name='ingredientinrecipe',
         verbose_name='Рецепт',
     )
     ingredient = models.ForeignKey(
@@ -125,10 +127,12 @@ class Favourite(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
+        related_name='favourite',
     )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='favouring',
     )
     date_added = models.DateTimeField(
         'Дата добавления',
@@ -149,11 +153,13 @@ class Cart(models.Model):
         Recipe,
         verbose_name='Рецепты в списке покупок',
         on_delete=models.CASCADE,
+        related_name='shopping',
     )
     user = models.ForeignKey(
         User,
         verbose_name='Владелец списка',
         on_delete=models.CASCADE,
+        related_name='shopping',
     )
     date_added = models.DateTimeField(
         'Дата добавления',

@@ -6,7 +6,7 @@ from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
 from recipes.models import AmountOfIngredient, Ingredient, Recipe, Tag
-from users.models import MyUser
+from users.models import User
 
 
 FIELDS = ('email', 'id', 'username', 'first_name', 'last_name',)
@@ -16,7 +16,7 @@ class UserSerializer(DjoserUserSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
-        model = MyUser
+        model = User
         fields = FIELDS + ('is_subscribed',)
         read_only_fields = ('id', 'is_subscribed')
 
@@ -30,7 +30,7 @@ class UserCreateSerializer(DjoserUserCreateSerializer):
     password = serializers.CharField(write_only=True)
 
     class Meta:
-        model = MyUser
+        model = User
         fields = FIELDS + ('password',)
         read_only_fields = ('id',)
 
@@ -147,7 +147,7 @@ class RecipeReadSerializer(serializers.ModelSerializer):
         return objects.filter(user=user).exists()
 
     def get_is_favorited(self, obj):
-        return self.status(obj.favorite)
+        return self.status(obj.favourite)
 
     def get_is_in_shopping_cart(self, obj):
         return self.status(obj.shopping)

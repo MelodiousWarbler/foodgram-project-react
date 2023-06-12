@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from recipes.models import (
     AmountOfIngredient, Cart, Favourite, Ingredient, Recipe, Tag
 )
-from users.models import MyUser, Subscription
+from users.models import User, Subscription
 
 from .filters import IngredientSearch, RecipeFilter
 from .pagination import Paginator
@@ -36,7 +36,7 @@ class UserViewSet(DjoserUserViewSet):
     def subscribe(self, request, id):
         user = request.user
         if request.method == 'POST':
-            author = get_object_or_404(MyUser, id=id)
+            author = get_object_or_404(User, id=id)
             serializer = UserWithRecipesSerializer(
                 author,
                 data=request.data,
@@ -69,7 +69,7 @@ class UserViewSet(DjoserUserViewSet):
         permission_classes=(IsAuthenticated,)
     )
     def subscriptions(self, request):
-        queryset = MyUser.objects.filter(subscribing__user=request.user)
+        queryset = User.objects.filter(subscribing__user=request.user)
         page = self.paginate_queryset(queryset)
         serializer = UserWithRecipesSerializer(
             page,
@@ -133,7 +133,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         detail=True,
         permission_classes=(IsAuthenticated,)
     )
-    def favorite(self, request, pk):
+    def favourite(self, request, pk):
         if request.method == 'POST':
             return self.add_to_list(Favourite, request.user, pk)
         return self.delete_from_list(Favourite, request.user, pk)
