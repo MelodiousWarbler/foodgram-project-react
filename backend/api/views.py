@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from recipes.models import (
     AmountOfIngredient, Cart, Favourite, Ingredient, Recipe, Tag
 )
-from users.models import User, Subscription
+from users.models import Subscription, User
 
 from .filters import IngredientSearch, RecipeFilter
 from .pagination import Paginator
