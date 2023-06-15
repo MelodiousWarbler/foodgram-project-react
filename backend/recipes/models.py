@@ -120,16 +120,16 @@ class AmountOfIngredient(models.Model):
         return f'{self.ingredient}-{self.recipe}'
 
 
-class Favourite(models.Model):
+class Favorite(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='favourite',
+        related_name='favorite',
     )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='favouring',
+        related_name='favoring',
     )
     date_added = models.DateTimeField(
         'Дата добавления',

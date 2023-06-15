@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from recipes.models import (
-    AmountOfIngredient, Cart, Favourite, Ingredient, Recipe, Tag
+    AmountOfIngredient, Cart, Favorite, Ingredient, Recipe, Tag
 )
 from users.models import Subscription, User
 
@@ -133,10 +133,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
         detail=True,
         permission_classes=(IsAuthenticated,)
     )
-    def favourite(self, request, pk):
+    def favorite(self, request, pk):
         if request.method == 'POST':
-            return self.add_to_list(Favourite, request.user, pk)
-        return self.delete_from_list(Favourite, request.user, pk)
+            return self.add_to_list(Favorite, request.user, pk)
+        return self.delete_from_list(Favorite, request.user, pk)
 
     @action(
         methods=['POST', 'DELETE'],

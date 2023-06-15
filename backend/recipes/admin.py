@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from foodgram import const
 from recipes.models import (
-    AmountOfIngredient, Cart, Favourite, Ingredient, Recipe, Tag
+    AmountOfIngredient, Cart, Favorite, Ingredient, Recipe, Tag
 )
 
 
@@ -42,8 +42,8 @@ class AmountOfIngredientAdmin(admin.ModelAdmin):
     empty_value_display = const.EMPTY
 
 
-@admin.register(Favourite)
-class FavouriteAdmin(admin.ModelAdmin):
+@admin.register(Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe',)
     list_filter = ('user', 'recipe',)
     empty_value_display = const.EMPTY
