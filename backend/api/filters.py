@@ -18,8 +18,8 @@ class RecipeFilter(FilterSet):
         to_field_name='slug',
         queryset=Tag.objects.all()
     )
-    is_favorited = filters.BooleanFilter(
-        method='filter_is_favorited',
+    is_favourited = filters.BooleanFilter(
+        method='filter_is_favourited',
         label='В избранном'
     )
     is_in_shopping_cart = filters.BooleanFilter(
@@ -30,16 +30,16 @@ class RecipeFilter(FilterSet):
     class Meta:
         model = Recipe
         fields = (
-            'is_favorited',
+            'is_favourited',
             'is_in_shopping_cart',
             'author',
             'tags'
         )
 
-    def filter_is_favorited(self, queryset, name, value):
+    def filter_is_favourited(self, queryset, name, value):
         user = self.request.user.pk
         if value and user:
-            return queryset.filter(favorite__user=user)
+            return queryset.filter(favourite__user=user)
         return queryset
 
     def filter_is_in_shopping_cart(self, queryset, name, value):
