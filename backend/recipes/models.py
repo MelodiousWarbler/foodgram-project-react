@@ -26,7 +26,7 @@ class Ingredient(models.Model):
         ordering = ('name',)
 
     def __str__(self) -> str:
-        return f'{self.name}'
+        return f'{self.name}, {self.measurement_unit}'
 
 
 class Tag(models.Model):
@@ -117,10 +117,7 @@ class AmountOfIngredient(models.Model):
         verbose_name_plural = 'Количество ингредиентов'
 
     def __str__(self):
-        return (
-            f'{self.ingredient.name} - {self.amount}'
-            f' ({self.ingredient.measurement_unit})'
-        )
+        return f'{self.ingredient}-{self.recipe}'
 
 
 class Favourite(models.Model):
