@@ -9,10 +9,6 @@ class MyUserAdmin(UserAdmin):
     list_display = (
         'username', 'first_name', 'last_name', 'email',
     )
-    fields = (
-        ('username', 'email', ),
-        ('first_name', 'last_name', ),
-    )
     search_fields = (
         'username', 'email',
     )

@@ -29,7 +29,7 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author', 'ingredients')
+    list_display = ('name', 'author',)
     list_filter = ('name', 'author', 'tags',)
     empty_value_display = const.EMPTY
 
