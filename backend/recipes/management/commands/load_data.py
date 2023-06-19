@@ -18,9 +18,9 @@ def ingredients_data():
 
 def create_tags():
     tags = (
-        'Завтрак', 'green', 'breakfast',
-        'Обед', 'blue', 'Lunch',
-        'Ужин', 'red', 'Dinner',
+        ['Завтрак', 'green', 'breakfast'],
+        ['Обед', 'blue', 'lunch'],
+        ['Ужин', 'red', 'dinner'],
     )
     for name, color, slug in tags:
         Tag.objects.get_or_create(
