@@ -80,9 +80,11 @@ class Recipe(models.Model):
         'Время приготовления (в минутах)',
         validators=(
             MinValueValidator(
-                1, message='Время приготовления не может быть меньше одной минуты!'
-            ),(MaxValueValidator(
-                const.MAX_VALUE, message='Время приготовления не может быть больше недели!'
+                1,
+                'Время приготовления не может быть меньше одной минуты!'
+            ), (MaxValueValidator(
+                const.MAX_VALUE,
+                'Время приготовления не может быть больше недели!'
             ))
         )
     )
@@ -113,7 +115,7 @@ class AmountOfIngredient(models.Model):
         validators=(
             MinValueValidator(
                 1, message='Количество не может быть меньше единицы!'
-            ),(MaxValueValidator(
+            ), (MaxValueValidator(
                 const.MAX_VALUE, message='Никто столько не съест!'
             ))
         )

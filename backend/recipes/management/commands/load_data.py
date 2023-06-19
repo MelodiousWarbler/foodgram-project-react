@@ -15,18 +15,19 @@ def ingredients_data():
             )
         print('Ингредиенты были добавлены.')
 
+
 def create_tags():
-    tags=(
+    tags = (
         'Завтрак', 'green', 'breakfast',
         'Обед', 'blue', 'Lunch',
         'Ужин', 'red', 'Dinner',
     )
     for name, color, slug in tags:
         Tag.objects.get_or_create(
-                name=name,
-                color=color,
-                slug=slug
-            )
+            name=name,
+            color=color,
+            slug=slug
+        )
         print('Тэги были добавлены.')
 
 
@@ -47,4 +48,3 @@ class Command(BaseCommand):
                         f'Файл {func.__name__[:-5]}.csv не найден!'
                     )
                 )
-
