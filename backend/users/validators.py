@@ -9,11 +9,3 @@ def validate_username(value):
             ('Допустимы буквы латинского алфавита, цифры и символы .@+-'),
             params={'value': value},
         )
-
-
-def validate_slug(value):
-    if re.search(r'^[-a-zA-Z0-9_]+$', value) is None:
-        raise ValidationError(
-            ('Допустимы буквы латинского алфавита, цифры и символы _-'),
-            params={'value': value},
-        )

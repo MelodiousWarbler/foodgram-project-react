@@ -1,9 +1,13 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 
 from foodgram import const
 from recipes.models import (
     AmountOfIngredient, Cart, Favorite, Ingredient, Recipe, Tag
 )
+
+
+admin.site.unregister(Group)
 
 
 @admin.register(Ingredient)
@@ -25,7 +29,7 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author',)
+    list_display = ('name', 'author', 'ingredients')
     list_filter = ('name', 'author', 'tags',)
     empty_value_display = const.EMPTY
 

@@ -1,12 +1,8 @@
-from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from foodgram import const
-from foodgram.validators import validate_slug
-
-
-User = get_user_model()
+from users.models import User
 
 
 class Ingredient(models.Model):
@@ -24,6 +20,12 @@ class Ingredient(models.Model):
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
         ordering = ('name',)
+        constraints = [
+            models.UniqueConstraint(
+                fields=('name', 'measurement_unit'),
+                name='unique_ingredient_unit'
+            )
+        ]
 
     def __str__(self) -> str:
         return f'{self.name}, {self.measurement_unit}'
@@ -40,10 +42,9 @@ class Tag(models.Model):
         max_length=const.HEX_LENGTH,
         unique=True
     )
-    slug = models.CharField(
+    slug = models.SlugField(
         'Слаг',
         max_length=const.STANDARD_LENGTH,
-        validators=(validate_slug,),
         unique=True
     )
 
@@ -75,12 +76,15 @@ class Recipe(models.Model):
         Tag,
         verbose_name='Список id тегов'
     )
-    cooking_time = models.PositiveIntegerField(
+    cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления (в минутах)',
-        validators=(MinValueValidator(
-            1,
-            message='Время приготовления не может быть меньше одной минуты!'
-        ),)
+        validators=(
+            MinValueValidator(
+                1, message='Время приготовления не может быть меньше одной минуты!'
+            ),(MaxValueValidator(
+                const.MAX_VALUE, message='Время приготовления не может быть больше недели!'
+            ))
+        )
     )
 
     class Meta:
@@ -104,12 +108,15 @@ class AmountOfIngredient(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Ингредиент',
     )
-    amount = models.PositiveIntegerField(
+    amount = models.PositiveSmallIntegerField(
         'Количество',
-        validators=(MinValueValidator(
-            1,
-            message='Количество не может быть меньше единицы!'
-        ),)
+        validators=(
+            MinValueValidator(
+                1, message='Количество не может быть меньше единицы!'
+            ),(MaxValueValidator(
+                const.MAX_VALUE, message='Никто столько не съест!'
+            ))
+        )
     )
 
     class Meta:
@@ -130,11 +137,6 @@ class Favorite(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='favoring',
-    )
-    date_added = models.DateTimeField(
-        'Дата добавления',
-        auto_now_add=True,
-        editable=False
     )
 
     class Meta:

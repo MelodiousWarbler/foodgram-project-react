@@ -9,18 +9,17 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.filters import IngredientSearch, RecipeFilter
+from api.pagination import Paginator
+from api.permissions import IsAuthorOrAdminOrReadOnly
+from api.serializers import (
+    IngredientSerializer, RecipeMinifiedSerializer, RecipeReadSerializer,
+    RecipeWriteSerializer, TagSerializer, UserWithRecipesSerializer
+)
 from recipes.models import (
     AmountOfIngredient, Cart, Favorite, Ingredient, Recipe, Tag
 )
 from users.models import Subscription, User
-
-from .filters import IngredientSearch, RecipeFilter
-from .pagination import Paginator
-from .permissions import IsAuthorOrAdminOrReadOnly
-from .serializers import (
-    IngredientSerializer, RecipeMinifiedSerializer, RecipeReadSerializer,
-    RecipeWriteSerializer, TagSerializer, UserWithRecipesSerializer
-)
 
 
 class UserViewSet(DjoserUserViewSet):

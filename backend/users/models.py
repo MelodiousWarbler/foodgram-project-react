@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from foodgram import const
-from foodgram.validators import validate_username
+from users.validators import validate_username
 
 
 class User(AbstractUser):
@@ -12,12 +12,12 @@ class User(AbstractUser):
         validators=(validate_username,),
         unique=True,
     )
-    # username = models.CharField(
-    #     'Уникальный юзернейм',
-    #     max_length=const.USER_STANDARD_FIELD_LENGTH,
-    #     validators=(validate_username,),
-    #     unique=True,
-    # )
+    username = models.CharField(
+        'Уникальный юзернейм',
+        max_length=const.USER_STANDARD_FIELD_LENGTH,
+        validators=(validate_username,),
+        unique=True,
+    )
     first_name = models.CharField(
         'Имя',
         max_length=const.USER_STANDARD_FIELD_LENGTH,
@@ -69,6 +69,16 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'],
+                name='unique_subscribe'
+            ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('author')),
+                name='self_subscribe'
+            ),
+        ]
 
     def __str__(self) -> str:
         return f'{self.user.username} -> {self.author.username}'

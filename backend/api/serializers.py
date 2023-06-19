@@ -1,5 +1,4 @@
 from djoser.serializers import (  # isort:skip
-    UserCreateSerializer as DjoserUserCreateSerializer,  # isort:skip
     UserSerializer as DjoserUserSerializer  # isort:skip
 )  # isort:skip
 from drf_extra_fields.fields import Base64ImageField
@@ -24,15 +23,6 @@ class UserSerializer(DjoserUserSerializer):
         return obj.subscribing.filter(
             user=self.context.get('request').user.id
         ).exists()
-
-
-class UserCreateSerializer(DjoserUserCreateSerializer):
-    password = serializers.CharField(write_only=True)
-
-    class Meta:
-        model = User
-        fields = FIELDS + ('password',)
-        read_only_fields = ('id',)
 
 
 class UserWithRecipesSerializer(UserSerializer):
@@ -61,11 +51,7 @@ class UserWithRecipesSerializer(UserSerializer):
         recipes_limit = request.query_params.get('recipes_limit')
         if recipes_limit:
             queryset = queryset[:int(recipes_limit)]
-        serializer = RecipeMinifiedSerializer(
-            queryset,
-            many=True
-        )
-        return serializer.data
+        return RecipeMinifiedSerializer(queryset, many=True).data
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
