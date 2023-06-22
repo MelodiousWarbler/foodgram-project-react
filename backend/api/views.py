@@ -33,7 +33,7 @@ class UserViewSet(DjoserUserViewSet):
         detail=True,
         permission_classes=(IsAuthenticated,)
     )
-    def subscribe(self, request, id):
+    def subscribe(self, request, id=None):
         user = request.user
         if request.method == 'POST':
             author = get_object_or_404(User, id=id)

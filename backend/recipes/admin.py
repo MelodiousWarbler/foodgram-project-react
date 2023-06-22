@@ -42,7 +42,7 @@ class RecipeAdmin(admin.ModelAdmin):
     empty_value_display = const.EMPTY
 
     def image(self, obj):
-        return mark_safe(f'<img src={obj.image.url} width="80" height="60">')  
+        return mark_safe(f'<img src={obj.image.url} width="80" height="60">')
 
     def favorite_count(self, obj):
         return obj.favorite_set.count()

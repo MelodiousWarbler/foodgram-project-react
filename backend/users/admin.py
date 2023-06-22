@@ -22,7 +22,7 @@ class MyUserAdmin(UserAdmin):
 
     def followers_count(self, obj):
         return obj.subscribing.count()
-    
+
     recipes_count.short_description = 'Всего рецептов'
     followers_count.short_description = 'Всего подписчиков'
 

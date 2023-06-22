@@ -238,7 +238,7 @@ class RecipeMinifiedSerializer(serializers.ModelSerializer):
     image = Base64ImageField()
 
     class Meta:
-        model = Recipe 
+        model = Recipe
         fields = (
             'id',
             'name',
