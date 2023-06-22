@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -37,7 +38,7 @@ class Tag(models.Model):
         max_length=const.STANDARD_LENGTH,
         unique=True
     )
-    color = models.CharField(
+    color = ColorField(
         'Цвет в HEX',
         max_length=const.HEX_LENGTH,
         unique=True
@@ -129,39 +130,30 @@ class AmountOfIngredient(models.Model):
         return f'{self.ingredient}-{self.recipe}'
 
 
-class Favorite(models.Model):
+class AbstractFavCart(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='favorite',
     )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='favoring',
     )
 
     class Meta:
-        verbose_name = 'Избранный рецепт'
-        verbose_name_plural = 'Избранные рецепты'
+        abstract = True
 
     def __str__(self) -> str:
         return f'{self.user} -> {self.recipe}'
 
 
-class Cart(models.Model):
-    recipe = models.ForeignKey(
-        Recipe,
-        verbose_name='Рецепты в списке покупок',
-        on_delete=models.CASCADE,
-        related_name='shopping',
-    )
-    user = models.ForeignKey(
-        User,
-        verbose_name='Владелец списка',
-        on_delete=models.CASCADE,
-        related_name='shopping',
-    )
+class Favorite(AbstractFavCart):
+    class Meta:
+        verbose_name = 'Избранный рецепт'
+        verbose_name_plural = 'Избранные рецепты'
+
+
+class Cart(AbstractFavCart):
     date_added = models.DateTimeField(
         'Дата добавления',
         auto_now_add=True,
@@ -171,6 +163,3 @@ class Cart(models.Model):
     class Meta:
         verbose_name = 'Рецепт в списке покупок'
         verbose_name_plural = 'Рецепты в списке покупок'
-
-    def __str__(self) -> str:
-        return f'{self.user} -> {self.recipe}'

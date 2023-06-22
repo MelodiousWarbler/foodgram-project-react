@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from django.utils.safestring import mark_safe
 
 from foodgram import const
 from recipes.models import (
@@ -27,11 +28,26 @@ class TagAdmin(admin.ModelAdmin):
     empty_value_display = const.EMPTY
 
 
+class IngredientInlineAdmin(admin.TabularInline):
+    model = Recipe.ingredients.through
+
+
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author',)
+    inlines = [
+        IngredientInlineAdmin
+    ]
+    list_display = ('name', 'author', 'favorite_count')
     list_filter = ('name', 'author', 'tags',)
     empty_value_display = const.EMPTY
+
+    def image(self, obj):
+        return mark_safe(f'<img src={obj.image.url} width="80" height="60">')  
+
+    def favorite_count(self, obj):
+        return obj.favorite_set.count()
+
+    favorite_count.short_description = 'Добавили в избранное'
 
 
 @admin.register(AmountOfIngredient)
