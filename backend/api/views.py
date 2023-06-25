@@ -1,4 +1,3 @@
-from django.db import IntegrityError
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -14,8 +13,8 @@ from api.pagination import Paginator
 from api.permissions import IsAuthorOrAdminOrReadOnly
 from api.serializers import (
     CartSerializer, FavoriteSerializer, IngredientSerializer,
-    RecipeReadSerializer, RecipeWriteSerializer, TagSerializer,
-    UserWithRecipesSerializer, SubscriptionWriteSerializer
+    RecipeReadSerializer, RecipeWriteSerializer, SubscriptionWriteSerializer,
+    TagSerializer, UserWithRecipesSerializer
 )
 from recipes.models import (
     AmountOfIngredient, Cart, Favorite, Ingredient, Recipe, Tag
