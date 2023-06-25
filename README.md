@@ -1,4 +1,4 @@
-# Проект Foodgram [![foodgram_workflow](https://github.com/MelodiousWarbler/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)](https://github.com/MelodiousWarbler/foodgram-project-react/actions/workflows/foodgram_workflow.yml)
+# Проект Foodgram [![foodgram_workflow](https://github.com/MelodiousWarbler/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?event=push)](https://github.com/MelodiousWarbler/foodgram-project-react/actions/workflows/foodgram_workflow.yml)
 
 ### Описание проекта:
 
