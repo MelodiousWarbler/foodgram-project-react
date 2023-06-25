@@ -130,7 +130,7 @@ class AmountOfIngredient(models.Model):
         return f'{self.ingredient}-{self.recipe}'
 
 
-class AbstractFavCart(models.Model):
+class UserRecipe(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -142,18 +142,25 @@ class AbstractFavCart(models.Model):
 
     class Meta:
         abstract = True
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'recipe'),
+                name='%(app_label)s_%(class)s_unique'
+            )
+        ]
 
     def __str__(self) -> str:
         return f'{self.user} -> {self.recipe}'
 
 
-class Favorite(AbstractFavCart):
+class Favorite(UserRecipe):
     class Meta:
+        default_related_name = 'favorites'
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
 
 
-class Cart(AbstractFavCart):
+class Cart(UserRecipe):
     date_added = models.DateTimeField(
         'Дата добавления',
         auto_now_add=True,
@@ -161,5 +168,6 @@ class Cart(AbstractFavCart):
     )
 
     class Meta:
+        default_related_name = 'shopping'
         verbose_name = 'Рецепт в списке покупок'
         verbose_name_plural = 'Рецепты в списке покупок'

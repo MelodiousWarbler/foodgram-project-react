@@ -30,6 +30,7 @@ class TagAdmin(admin.ModelAdmin):
 
 class IngredientInlineAdmin(admin.TabularInline):
     model = Recipe.ingredients.through
+    min_num = 1
 
 
 @admin.register(Recipe)
@@ -37,16 +38,24 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = [
         IngredientInlineAdmin
     ]
-    list_display = ('name', 'author', 'favorite_count')
+    list_display = (
+        'name', 'author', 'image', 'get_ingredients', 'favorite_count'
+    )
     list_filter = ('name', 'author', 'tags',)
     empty_value_display = const.EMPTY
+
+    def get_ingredients(self, obj):
+        return ', '.join([
+            ingredients.name for ingredients
+            in obj.ingredients.all()])
 
     def image(self, obj):
         return mark_safe(f'<img src={obj.image.url} width="80" height="60">')
 
     def favorite_count(self, obj):
-        return obj.favorite_set.count()
+        return obj.favorites.count()
 
+    get_ingredients.short_description = 'Ингредиенты'
     favorite_count.short_description = 'Добавили в избранное'
 
 

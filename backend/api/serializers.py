@@ -1,10 +1,12 @@
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
+
 
 from recipes.models import (
     AmountOfIngredient, Cart, Favorite, Ingredient, Recipe, Tag
 )
-from users.models import User
+from users.models import Subscription, User
 
 
 FIELDS = ('email', 'id', 'username', 'first_name', 'last_name',)
@@ -20,9 +22,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        if self.context.get('request').user.is_anonymous:
-            return False
-        return obj.subscribing.filter(user=request.user).exists()
+        return (
+            request.user.is_authenticated
+            and obj.subscribing.filter(user=request.user).exists()
+        )
 
 
 class UserWithRecipesSerializer(UserSerializer):
@@ -59,6 +62,18 @@ class UserWithRecipesSerializer(UserSerializer):
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
+
+
+class SubscriptionWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ('user', 'author')
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Subscription.objects.all(),
+                fields=('user', 'author')
+            )
+        ]
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -134,14 +149,17 @@ class RecipeReadSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
     def status(self, objects):
-        user = self.context.get('request').user.id
-        return objects.filter(user=user).exists()
+        request = self.context.get('request')
+        return (
+            request.user.is_authenticated
+            and objects.filter(user=request.user.id).exists()
+        )
 
     def get_is_favorited(self, obj):
-        return self.status(obj.favorite_set)
+        return self.status(obj.favorites)
 
     def get_is_in_shopping_cart(self, obj):
-        return self.status(obj.cart_set)
+        return self.status(obj.shopping)
 
 
 class RecipeWriteSerializer(serializers.ModelSerializer):
@@ -255,7 +273,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         user = data['user']
-        if user.favorite_set.filter(recipe=data['recipe']).exists():
+        if user.favorites.filter(recipe=data['recipe']).exists():
             raise serializers.ValidationError(
                 'Рецепт уже добавлен в избранное.'
             )
@@ -269,7 +287,7 @@ class CartSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         user = data['user']
-        if user.cart_set.filter(recipe=data['recipe']).exists():
+        if user.shopping.filter(recipe=data['recipe']).exists():
             raise serializers.ValidationError(
                 'Рецепт уже добавлен в корзину'
             )

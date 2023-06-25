@@ -15,7 +15,7 @@ from api.permissions import IsAuthorOrAdminOrReadOnly
 from api.serializers import (
     CartSerializer, FavoriteSerializer, IngredientSerializer,
     RecipeReadSerializer, RecipeWriteSerializer, TagSerializer,
-    UserWithRecipesSerializer
+    UserWithRecipesSerializer, SubscriptionWriteSerializer
 )
 from recipes.models import (
     AmountOfIngredient, Cart, Favorite, Ingredient, Recipe, Tag
@@ -28,32 +28,23 @@ class UserViewSet(DjoserUserViewSet):
     http_method_names = ('get', 'post', 'delete')
 
     @action(
-        http_method_names=('post', 'delete'),
+        # http_method_names=('post', 'delete'),
         methods=('POST',),
         detail=True,
         permission_classes=(IsAuthenticated,)
     )
     def subscribe(self, request, id):
-        user = request.user
-        if request.method == 'POST':
-            author = get_object_or_404(User, id=id)
-            serializer = UserWithRecipesSerializer(
-                author,
-                data=request.data,
-                context={'request': request}
-            )
-            serializer.is_valid(raise_exception=True)
-            try:
-                Subscription.objects.create(user=user, author=author)
-            except IntegrityError:
-                return Response(
-                    {'errors': 'Вы уже подписаны на автора.'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            return Response(
-                serializer.data,
-                status=status.HTTP_201_CREATED
-            )
+        author = get_object_or_404(User, id=id)
+        data = {
+            'user': request.user.id,
+            'author': author.id
+        }
+        serializer = SubscriptionWriteSerializer(
+            data=data,
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @subscribe.mapping.delete
     def delete_subscription(self, request, id=id):
@@ -106,7 +97,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @staticmethod
     def add_to_list(serializer, pk, request):
         recipe = get_object_or_404(Recipe, pk=pk)
-        context = {"request": request}
+        context = {'request': request}
         data = {
             'user': request.user.id,
             'recipe': recipe.id
@@ -168,7 +159,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def download_shopping_cart(self, request):
         ingredients = (
             AmountOfIngredient.objects
-            .filter(recipe__cart_set__user=request.user)
+            .filter(recipe__shopping__user=request.user)
             .values('ingredient__name', 'ingredient__measurement_unit')
             .annotate(amount=Sum('amount'))
             .order_by('ingredient__name')
