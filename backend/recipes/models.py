@@ -154,7 +154,7 @@ class UserRecipe(models.Model):
 
 
 class Favorite(UserRecipe):
-    class Meta:
+    class Meta(UserRecipe.Meta):
         default_related_name = 'favorites'
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
@@ -167,7 +167,7 @@ class Cart(UserRecipe):
         editable=False
     )
 
-    class Meta:
+    class Meta(UserRecipe.Meta):
         default_related_name = 'shopping'
         verbose_name = 'Рецепт в списке покупок'
         verbose_name_plural = 'Рецепты в списке покупок'
