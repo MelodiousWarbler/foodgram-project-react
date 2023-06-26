@@ -142,12 +142,12 @@ class UserRecipe(models.Model):
 
     class Meta:
         abstract = True
-        constraints = [
-            models.UniqueConstraint(
-                fields=('user', 'recipe'),
-                name='%(app_label)s_%(class)s_unique'
-            )
-        ]
+        # constraints = [
+        #     models.UniqueConstraint(
+        #         fields=('user', 'recipe'),
+        #         name='%(app_label)s_%(class)s_unique'
+        #     )
+        # ]
 
     def __str__(self) -> str:
         return f'{self.user} -> {self.recipe}'
