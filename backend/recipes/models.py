@@ -142,12 +142,6 @@ class UserRecipe(models.Model):
 
     class Meta:
         abstract = True
-        # constraints = [
-        #     models.UniqueConstraint(
-        #         fields=('user', 'recipe'),
-        #         name='%(app_label)s_%(class)s_unique'
-        #     )
-        # ]
 
     def __str__(self) -> str:
         return f'{self.user} -> {self.recipe}'
@@ -158,7 +152,12 @@ class Favorite(UserRecipe):
         default_related_name = 'favorites'
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
-
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'recipe'),
+                name='unique_favorite'
+            )
+        ]
 
 class Cart(UserRecipe):
     date_added = models.DateTimeField(
@@ -171,3 +170,9 @@ class Cart(UserRecipe):
         default_related_name = 'shopping'
         verbose_name = 'Рецепт в списке покупок'
         verbose_name_plural = 'Рецепты в списке покупок'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'recipe'),
+                name='unique_cart'
+            )
+        ]
