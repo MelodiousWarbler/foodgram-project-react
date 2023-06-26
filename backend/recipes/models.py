@@ -159,6 +159,7 @@ class Favorite(UserRecipe):
             )
         ]
 
+
 class Cart(UserRecipe):
     date_added = models.DateTimeField(
         'Дата добавления',
