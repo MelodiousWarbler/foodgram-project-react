@@ -109,7 +109,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @staticmethod
     def delete_from_list(model, user, pk=None):
         get_object_or_404(
-            model, user=user, pk=pk
+            model, user=user, recipe=pk
         ).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
