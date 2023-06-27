@@ -84,8 +84,8 @@ jobs:
           sudo docker-compose exec -T backend python manage.py migrate
           sudo docker-compose exec -T backend python manage.py collectstatic --no-input
           sudo docker-compose exec -T backend python manage.py load_data
-          sudo docker-compose exec -T backend python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.update_or_create(username='admin', email='admin@example.com', password='admin', is_staff=True, is_superuser=True, first_name='Василий', last_name='Пупкин')"
-          sudo docker-compose exec -T backend python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.update_or_create(username='review', email='review@admin.ru', password='review1admin', is_staff=True, is_superuser=True, first_name='Евгений', last_name='Салахутдинов')"
+          # sudo docker-compose exec -T backend python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'admin', first_name='Василий', last_name='Пупкин')"
+          # sudo docker-compose exec -T backend python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('review', 'review@admin.ru', 'review1admin', first_name='Евгений', last_name='Салахутдинов')"
 
   send_message:
     runs-on: ubuntu-latest
